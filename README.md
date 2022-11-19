@@ -50,7 +50,7 @@ Depois de conferir se está tudo certo, vamos adicionar o Angular Material.
 - Vai perguntar sobre a tipografia do Angular Material, escolher (Y) 
 - Escolha para usar e ativar as Animations
 
-## Criando uma Toolbar na Página Principal
+## Aula 3 - Criando uma Toolbar na Página Principal
 
 Para adicionar o Toolbar, acesse a doc https://material.angular.io/components/toolbar/overview.
 
@@ -82,7 +82,7 @@ Apagar **todo conteúdo** do *app.componet.html*, e colar o seguinte conteúdo.
 
 > Se não funcionar, tente parar o `ng serve` e executar novamente. 
 
-## Criando o Módulo de Cursos e Usando Roteamento com Lazy Loading
+## Aula 4 - Criando o Módulo de Cursos e Usando Roteamento com Lazy Loading
 
 Para melhor organização do projeto, está sendo separado em módulos, pois conforme o projeto vai crescendo, assim fica mais fácil de gerenciar os componentes criados. Os componentes criados em um módulos são vistos apenas naquele módulo, caso queira usá-lo em outro módulo, tem que exportar no módulo original e depois importar no módulo que deseja usá-lo.
 
@@ -130,6 +130,25 @@ Adicionar `router-outlet` para exibir o conteúdo das Rotas:
 </mat-toolbar>
 
 <router-outlet></router-outlet>
+```
+
+## Aula 5 - Customizando o Tema do Angular Material
+
+Para criar Theme, acesse a doc: https://material.angular.io/guide/theming
+
+```scss
+// file: crud-angular\src\styles.scss
+
+@import '@angular/material/theming';
+@include mat-core();
+
+$custom-app-primary: mat-palette($mat-light-blue, 800);
+$custom-app-secondary: mat-palette($mat-indigo, A200, A400, 700);
+$custom-app-warn: mat-palette($mat-red);
+
+$custom-theme: mat-light-theme($custom-app-primary, $custom-app-secondary,  $custom-app-warn);
+
+@include angular-material-theme($custom-theme);
 ```
 
 # Lista de Cursos - Angular
