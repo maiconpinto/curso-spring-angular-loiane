@@ -82,6 +82,56 @@ Apagar **todo conteúdo** do *app.componet.html*, e colar o seguinte conteúdo.
 
 > Se não funcionar, tente parar o `ng serve` e executar novamente. 
 
+## Criando o Módulo de Cursos e Usando Roteamento com Lazy Loading
+
+Para melhor organização do projeto, está sendo separado em módulos, pois conforme o projeto vai crescendo, assim fica mais fácil de gerenciar os componentes criados. Os componentes criados em um módulos são vistos apenas naquele módulo, caso queira usá-lo em outro módulo, tem que exportar no módulo original e depois importar no módulo que deseja usá-lo.
+
+Criar Módulo Courses:
+
+`ng g m courses --routing`
+
+Criar Componente Courses:
+
+`ng g c courses/courses`
+
+Configurar o Routes do Courses:
+
+```typescript
+// file: crud-angular\src\app\courses\courses-routing.module.ts
+
+import { CoursesComponent } from './courses/courses.component';
+
+const routes: Routes = [
+  { path: '', component: CoursesComponent}
+];
+```
+
+Configurar o Routes do App:
+
+```typescript
+// file: crud-angular\src\app\app-routing.module.ts
+
+const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'courses'},
+  {
+    path: 'courses',
+    loadChildren: () => import('./courses/courses.module').then(m => m.CoursesModule)
+  }
+];
+```
+
+Adicionar `router-outlet` para exibir o conteúdo das Rotas:
+
+```html
+<!-- file: crud-angular\src\app\app.component.html-->
+
+<mat-toolbar color="primary">
+  <span>CRUD Angular + Spring</span>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
+```
+
 # Lista de Cursos - Angular
 
 # Lista de Cursos - Backend com Spring
