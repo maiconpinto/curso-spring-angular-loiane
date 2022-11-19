@@ -50,6 +50,38 @@ Depois de conferir se está tudo certo, vamos adicionar o Angular Material.
 - Vai perguntar sobre a tipografia do Angular Material, escolher (Y) 
 - Escolha para usar e ativar as Animations
 
+## Criando uma Toolbar na Página Principal
+
+Para adicionar o Toolbar, acesse a doc https://material.angular.io/components/toolbar/overview.
+
+Passo 1:
+
+```typescript
+// file: crud-angular\src\app\app.module.ts
+
+import { MatToolbarModule } from '@angular/material/toolbar';
+
+@NgModule({
+  imports: [
+    MatToolbarModule
+  ]
+})
+```
+
+Passo 2:
+
+Apagar **todo conteúdo** do *app.componet.html*, e colar o seguinte conteúdo.
+
+```html
+<!-- file: crud-angular\src\app\app.component.html -->
+
+<mat-toolbar color="primary">
+  <span>CRUD Angular + Spring</span>
+</mat-toolbar>
+```
+
+> Se não funcionar, tente parar o `ng serve` e executar novamente. 
+
 # Lista de Cursos - Angular
 
 # Lista de Cursos - Backend com Spring
