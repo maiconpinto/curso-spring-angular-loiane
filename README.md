@@ -346,7 +346,48 @@ import { AppMaterialModule } from '../shared/app-material/app-material.module';
   ]
 })
 ```
+## Aula 8 - Criando um Service no Angular
 
+Passo 1: Criar o Service Courses
+
+`ng g s courses/services/courses`
+
+Passo 2: Criar método list
+
+```typescript
+// file: crud-angular\src\app\courses\services\courses.service.ts
+
+import { Injectable } from '@angular/core';
+import { Course } from '../model/course';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CoursesService {
+
+  constructor() { }
+
+  list(): Course[] {
+    return [
+      { _id: '1', name: 'Angular', category: 'front-end'}
+    ];
+  }
+}
+```
+
+Passo 3: Popular variável `courses` com retorno do Service, através do constructor. Não esquecer de zerar a inicialização da variável `courses`. 
+
+```typescript
+// file: crud-angular\src\app\courses\courses\courses.component.ts
+
+import { CoursesService } from '../services/courses.service';
+
+courses: Course[] = [];
+
+constructor(private coursesService: CoursesService) {
+  this.courses = this.coursesService.list();
+}
+```
 
 # Lista de Cursos - Backend com Spring
 
