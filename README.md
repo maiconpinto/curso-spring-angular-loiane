@@ -54,7 +54,7 @@ Depois de conferir se está tudo certo, vamos adicionar o Angular Material.
 
 Para adicionar o Toolbar, acesse a doc https://material.angular.io/components/toolbar/overview.
 
-Passo 1:
+Passo 1: Importar o MatToolbarModule
 
 ```typescript
 // file: crud-angular\src\app\app.module.ts
@@ -152,6 +152,87 @@ $custom-theme: mat-light-theme($custom-app-primary, $custom-app-secondary,  $cus
 ```
 
 # Lista de Cursos - Angular
+
+## Aula 6 - Criando Material Table para Listar Cursos
+
+Para criar List, acesse a doc: https://material.angular.io/components/list/overview
+
+Passo 1: Importar o MatTableModule 
+
+```typescript
+// file: crud-angular\src\app\courses\courses.module.ts
+
+import { MatTableModule } from '@angular/material/table';
+
+@NgModule({
+  imports: [
+    MatTableModule
+  ]
+})
+```
+
+Passo 2: Gerar o Model Course
+
+Criar pasta **model**, no path `crud-angular/src/app/courses/model`.
+
+Gerar uma interface Course:
+
+`ng g interface courses/model/course` 
+
+```typescript
+// file: crud-angular/src/app/courses/model/course.ts
+
+export interface Course {
+  _id: string;
+  name: string;
+  category: string;
+}
+```
+
+Passo 3: TypeScript
+
+Criar variáveis `courses` e `displayedColumns` e já inicializar elas.
+
+```typescript
+// file: crud-angular\src\app\courses\courses\courses.component.ts
+
+import { Course } from '../model/course';
+
+export class CoursesComponent {
+
+  courses: Course[] = [
+    { _id: '1', name: 'Angular', category: 'front-end'}
+  ];
+
+  displayedColumns = ['name', 'category'];
+}
+```
+
+Passo 4: HTML
+
+Apagar **todo conteúdo** do *courses.component.html*, e colar o seguinte conteúdo.
+
+```html
+<!-- crud-angular\src\app\courses\courses\courses.component.html -->
+
+<table mat-table [dataSource]="courses" class="mat-elevation-z8">
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Curso </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <!-- Category Column -->
+  <ng-container matColumnDef="category">
+    <th mat-header-cell *matHeaderCellDef> Categoria </th>
+    <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+```
 
 # Lista de Cursos - Backend com Spring
 

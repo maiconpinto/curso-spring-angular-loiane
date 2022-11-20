@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { Course } from '../model/course';
+
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
@@ -7,4 +9,9 @@ import { Component } from '@angular/core';
 })
 export class CoursesComponent {
 
+  courses: Course[] = [
+    { _id: '1', name: 'Angular', category: 'front-end'}
+  ];
+
+  displayedColumns = ['name', 'category'];
 }
