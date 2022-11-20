@@ -6,11 +6,13 @@ import { CoursesComponent } from './courses/courses.component';
 
 import { AppMaterialModule } from '../shared/app-material/app-material.module';
 import { DialogComponent } from '../shared/dialog/dialog.component';
+import { CategoryPipe } from '../shared/pipes/category.pipe';
 
 @NgModule({
   declarations: [
     CoursesComponent,
-    DialogComponent
+    DialogComponent,
+    CategoryPipe
   ],
   imports: [
     CommonModule,

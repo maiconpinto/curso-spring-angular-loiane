@@ -544,6 +544,10 @@ Só isso já resolve o tratamento de erros, porém não deixa claro que houve um
 
 Passo 3: Import do MatDialogModule e MatButtonModule
 
+Doc MatDialogModule https://material.angular.io/components/dialog/overview
+
+Doc MatButtonModule https://material.angular.io/components/button/overview
+
 ```typescript
 // file: crud-angular\src\app\shared\app-material\app-material.module.ts
 
@@ -628,6 +632,76 @@ onError(errorMsg: string) {
     data: dialogModel
   });
 }
+```
+
+## Aula 12 - Lista de Cursos: Pipe para mostrar ícone
+
+Doc MatIconModule https://material.angular.io/components/icon/overview
+
+Passo 1: Import o MatIconModule
+
+```typescript
+// file: crud-angular\src\app\shared\app-material\app-material.module.ts
+
+import { MatIconModule } from '@angular/material/icon';
+
+@NgModule({
+  exports: [
+    MatIconModule
+  ]
+})
+```
+
+Passo 2: Criar Pipe Category
+
+`ng g pipe shared/pipes/category`
+
+Ao executar o comando no terminal, o pipe vai ser registrado automaticamente no **AppModule**, então corrija isso! Retire o import e declaration referente ao CategoryPipe, e faça isso no **CoursesModule**.
+
+Passo 3: Alterar o CategoryPipe
+
+```typescript
+// file: crud-angular\src\app\shared\pipes\category.pipe.ts
+
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'category'
+})
+export class CategoryPipe implements PipeTransform {
+
+  transform(value: string): string {
+    switch (value) {
+      case 'front-end':
+        return 'code';
+        break;
+      case 'back-end':
+        return 'computer';
+        break;
+
+      default:
+        return 'code';
+        break;
+    }
+  }
+}
+```
+
+Passo 4: Alterar o Course HTML
+
+Alterar toda a coluna da categoria.
+
+```html
+<!-- file: crud-angular\src\app\courses\courses\courses.component.html -->
+
+<!-- Category Column -->
+<ng-container matColumnDef="category">
+  <th mat-header-cell *matHeaderCellDef> Categoria </th>
+  <td mat-cell *matCellDef="let element"> 
+    {{element.category}}
+    <mat-icon aria-hidden="false" aria-label="Categoria do Curso" fontIcon="{{ element.category | category }}"></mat-icon>
+  </td>
+</ng-container>
 ```
 
 # Lista de Cursos - Backend com Spring
