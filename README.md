@@ -234,6 +234,71 @@ Apagar **todo conteúdo** do *courses.component.html*, e colar o seguinte conte�
 </table>
 ```
 
+## Aula 7 - CSS do Material Table e Criando um Módulo App Material
+
+Para criar Card, acesse a doc: https://material.angular.io/components/card/overview
+
+Passo 1: Importar o MatCardModule 
+
+```typescript
+// file: crud-angular\src\app\courses\courses.module.ts
+
+import { MatCardModule } from '@angular/material/card';
+
+@NgModule({
+  imports: [
+    MatCardModule
+  ]
+})
+```
+
+Passo 2: Englobar conteúdo da table dentro do `<mat-card></mat-card>`.
+
+```html
+<!-- file: crud-angular\src\app\courses\courses\courses.component.html -->
+
+<mat-card>
+  <table mat-table [dataSource]="courses" class="mat-elevation-z8">
+    ....
+  </table>
+</mat-card>
+```
+
+> Para mim não resolveu a questão do espaçamento que aparece no vídeo da Loiane, então eu precisei acrescentar uma declaração de CSS para o componente mat-card.
+
+```scss
+// file: crud-angular\src\app\courses\courses\courses.component.scss
+
+mat-card {
+  margin: 1rem;
+}
+```
+
+Passo 3: Adicionar Toolbar como Título da tabela
+
+```typescript
+// file: crud-angular\src\app\courses\courses.module.ts
+
+import { MatToolbarModule } from '@angular/material/toolbar';
+
+@NgModule({
+  imports: [
+    MatToolbarModule
+  ]
+})
+```
+
+Adicionar `<mat-toolbar>` no HTML.
+
+```html
+<!-- file: crud-angular\src\app\courses\courses\courses.component.html -->
+
+<mat-card>
+  <mat-toolbar color="primary">Cursos Disponíveis</mat-toolbar>
+  ....
+</mat-card>
+```
+
 # Lista de Cursos - Backend com Spring
 
 # Criando um Curso
