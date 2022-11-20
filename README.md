@@ -391,7 +391,6 @@ constructor(private coursesService: CoursesService) {
 
 ## Aula 9 - Chamada HTTP Get no Angular e RXJS
 
-
 Passo 1: Adicionar import do HttpClientModule no AppModule
 
 ```typescript
@@ -448,6 +447,7 @@ export class CoursesService {
 Passo 4: Alterar o tipo da variável `courses` para o tipo **Observable**.
 
 ```typescript
+// file: crud-angular\src\app\courses\courses\courses.component.ts
 
 import { Observable } from 'rxjs';
 
@@ -455,6 +455,66 @@ courses: Observable<Course[]>;
 ```
 
 > Não é preciso fazer nenhuma outra modificação para funcionar, pois está usando o `dataSource` do Angular Material, e ele recebe um array ou um Observable, por isso simplifica tanto. Caso contrário teria que fazer um **subscribe** no Component.
+
+## Aula 10 - Lista de Cursos: Spinner (Carregando)
+
+Passo 1: Adicionar o Spinner
+
+Para adicionar o Progress Spinner, acesse a doc https://material.angular.io/components/progress-spinner/overview
+
+```typescript
+// file: crud-angular\src\app\shared\app-material\app-material.module.ts
+
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+@NgModule({
+  exports: [
+    MatProgressSpinnerModule
+  ]
+})
+```
+
+Passo 2: Alterar o Component.
+
+```typescript
+// file: crud-angular\src\app\courses\courses\courses.component.ts
+
+// ALTERAR O NOME ACRESCENTANDO O "$"
+courses$: Observable<Course[]>;
+
+// CORRIGIR O NOME
+this.courses$ = this.coursesService.list();
+```
+
+Passo 3: Alterar o HTML
+
+```html
+<!-- file: crud-angular\src\app\courses\courses\courses.component.html -->
+
+<div *ngIf="courses$ | async as courses; else loading">
+  <!-- CONTEÚDO DO <table></table> -->
+</div>
+
+<ng-template #loading>
+  <div class="loading-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
+```
+
+Passo 4: Acrescentar no CSS
+
+```scss
+.loading-spinner {
+  padding: 25px;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+```
+
+> Se quiser testar o Spinner, pode adicionar um delay no service, utilizando o operador Rxjs delay(5000).
 
 # Lista de Cursos - Backend com Spring
 
