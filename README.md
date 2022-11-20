@@ -516,6 +516,120 @@ Passo 4: Acrescentar no CSS
 
 > Se quiser testar o Spinner, pode adicionar um delay no service, utilizando o operador Rxjs delay(5000).
 
+## Aula 11 - Lista de Cursos: Tratamento de Erros e MatDialog
+
+Passo 1: Gerar o erro
+
+Para gerar erro pode alterar o endereço da variável API.
+
+```typescript
+// file: crud-angular\src\app\courses\services\courses.service.ts
+
+private readonly API = '/assets/courses-errors.json';
+```
+
+Passo 2: Tratar o erro no Compoment
+
+```typescript
+// file: crud-angular\src\app\courses\courses\courses.component.ts
+
+this.courses$ = this.coursesService.list().pipe(
+  catchError(error => {
+    return of([]);
+  })
+);
+```
+
+Só isso já resolve o tratamento de erros, porém não deixa claro que houve um erro, apenas que não carregou os dados. Para informar o usuário que houve de fato um erro, será criado um popup, ou no caso do Angular Material, um Dialog com a mensagem de erro.
+
+Passo 3: Import do MatDialogModule e MatButtonModule
+
+```typescript
+// file: crud-angular\src\app\shared\app-material\app-material.module.ts
+
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+
+@NgModule({
+  exports: [
+    MatDialogModule,
+    MatButtonModule
+  ]
+})
+```
+
+Passo 4: Gerar Component Dialog
+
+`ng g c shared/dialog`
+
+Ao executar o comando no terminal, o component vai ser registrado automaticamente no **AppModule**, então corrija isso! Retire o import e declaration referente ao DialogComponent, e faça isso no **CoursesModule**.
+
+Passo 5: Alterar o DialogComponent
+
+```typescript
+// file: crud-angular\src\app\shared\dialog\dialog.component.ts
+
+constructor(@Inject(MAT_DIALOG_DATA) public data: DialogModel) {}
+```
+
+Passo 6: Alterar o Dialog HTML
+
+```html
+<!-- crud-angular\src\app\shared\dialog\dialog.component.html -->
+
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<mat-dialog-content class="mat-typography">
+  {{ data.content }}
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-raised-button mat-dialog-close>Ok</button>
+</mat-dialog-actions>
+```
+
+Passo 7: Criar o DialogModel
+
+```typescript
+// file: crud-angular\src\app\shared\dialog\dialog.model.ts
+
+export interface DialogModel {
+  title: string;
+  content: string;
+}
+```
+
+Passo 8: Alterar o CoursesComponent (de novo)
+
+Depois de preparar o terreno para utilizar o DialogComponent, vamos chamá-lo.
+
+```typescript
+// file: crud-angular\src\app\courses\courses\courses.component.ts
+
+import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
+import { DialogModel } from 'src/app/shared/dialog/dialog.model';
+
+constructor(
+  private coursesService: CoursesService,
+  public dialog: MatDialog) {
+  this.courses$ = this.coursesService.list().pipe(
+    catchError(error => {
+      this.onError('Erro ao carregar cursos.');
+      return of([]);
+    })
+  );
+}
+
+onError(errorMsg: string) {
+  const dialogModel: DialogModel = {
+    title: 'Erro no sistema',
+    content: errorMsg
+  };
+
+  this.dialog.open(DialogComponent, {
+    data: dialogModel
+  });
+}
+```
+
 # Lista de Cursos - Backend com Spring
 
 # Criando um Curso
