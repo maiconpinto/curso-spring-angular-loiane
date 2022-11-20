@@ -389,6 +389,73 @@ constructor(private coursesService: CoursesService) {
 }
 ```
 
+## Aula 9 - Chamada HTTP Get no Angular e RXJS
+
+
+Passo 1: Adicionar import do HttpClientModule no AppModule
+
+```typescript
+// file: crud-angular\src\app\app.module.ts
+
+import { HttpClientModule } from '@angular/common/http';
+
+@NgModule({
+  imports: [
+    HttpClientModule
+  ]
+})
+```
+
+Passo 2: Criar o arquivo de Data (Fake) `courses.json`.
+
+```json
+// file: crud-angular-spring/crud-angular/src/assets/courses.json
+[
+  { "_id": "1", "name": "Angular", "category": "front-end"}
+]
+```
+
+Passo 3: Modificar o Service para simular a chamada ao serviço
+
+```typescript
+// file: crud-angular\src\app\courses\services\courses.service.ts
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+import { Course } from '../model/course';
+import { first, tap } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CoursesService {
+
+  private readonly API = '/assets/courses.json';
+
+  constructor(private httpClient: HttpClient) { }
+
+  list() {
+    return this.httpClient.get<Course[]>(this.API)
+    .pipe(
+      first(),
+      tap(courses => console.log(courses))
+    );
+  }
+}
+```
+
+Passo 4: Alterar o tipo da variável `courses` para o tipo **Observable**.
+
+```typescript
+
+import { Observable } from 'rxjs';
+
+courses: Observable<Course[]>;
+```
+
+> Não é preciso fazer nenhuma outra modificação para funcionar, pois está usando o `dataSource` do Angular Material, e ele recebe um array ou um Observable, por isso simplifica tanto. Caso contrário teria que fazer um **subscribe** no Component.
+
 # Lista de Cursos - Backend com Spring
 
 # Criando um Curso
