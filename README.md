@@ -299,6 +299,55 @@ Adicionar `<mat-toolbar>` no HTML.
 </mat-card>
 ```
 
+**Refactoring - Refatorando os imports de Módulos do Angular Material**
+
+Passo 1: Criar Módulo AppMaterial
+
+Não precisa do Routing, é um módulo criado apenas para organizar os imports do Angular Material.
+
+`ng g m shared/app-material` 
+
+Editar o módulo criado para deixar apenas o exports, código completo abaixo.
+
+```typescript
+// file: crud-angular\src\app\shared\app-material\app-material.module.ts
+
+import { NgModule } from '@angular/core';
+
+import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
+@NgModule({
+  exports: [
+    MatTableModule,
+    MatCardModule,
+    MatToolbarModule
+  ]
+})
+export class AppMaterialModule { }
+```
+
+Passo 2: Remover referências a MatTableModule, MatCardModule e MatToolbarModule e adicionar a AppMaterialModule
+
+```typescript
+// file: crud-angular\src\app\courses\courses.module.ts
+
+// ------------------- REMOVIDOS ---------------------------
+// import { MatTableModule } from '@angular/material/table';
+// import { MatCardModule } from '@angular/material/card';
+// import { MatToolbarModule } from '@angular/material/toolbar';
+
+import { AppMaterialModule } from '../shared/app-material/app-material.module';
+
+@NgModule({
+  imports: [
+    AppMaterialModule
+  ]
+})
+```
+
+
 # Lista de Cursos - Backend com Spring
 
 # Criando um Curso
